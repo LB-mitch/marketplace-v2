@@ -7,7 +7,7 @@ import {
   FormatCurrency,
   Text,
 } from 'components/primitives'
-import { mainnet, polygon, optimism } from 'wagmi/chains'
+import { mainnet, polygon, optimism, sepolia } from 'wagmi/chains'
 import { useAccount, useContractReads, erc20ABI, useBalance } from 'wagmi'
 import { useMemo, useState } from 'react'
 import { zeroAddress, formatUnits } from 'viem'
@@ -66,6 +66,16 @@ const currencies = [
     },
     coinGeckoId: 'weth',
   },
+  {
+    address: zeroAddress,
+    symbol: 'SEPO',
+    decimals: sepolia.nativeCurrency.decimals,
+    chain: {
+      id: sepolia.id,
+      name: sepolia.name,
+    },
+    coinGeckoId: 'ethereum',
+  },
 ]
 
 type EnhancedCurrency = (typeof currencies)[0] & {
@@ -108,6 +118,10 @@ const Wallet = () => {
     address,
     chainId: polygon.id,
   })
+  const sepoliaBalance = useBalance({
+    address,
+    chainId: sepolia.id,
+  })
 
   const usdConversions = useCoinConversion(
     'USD',
@@ -133,6 +147,10 @@ const Wallet = () => {
           }
           case mainnet.id: {
             balance = ethBalance.data?.value || 0n
+            break
+          }
+          case sepolia.id: {
+            balance = sepoliaBalance.data?.value || 0n
             break
           }
         }
@@ -169,7 +187,13 @@ const Wallet = () => {
       }
     }) as EnhancedCurrency[]
     //CONFIGURABLE: Configure these to regenerate whenever a native balance changes, non native balances are already handled
-  }, [usdConversions, nonNativeBalances, ethBalance, maticBalance])
+  }, [
+    usdConversions,
+    nonNativeBalances,
+    ethBalance,
+    maticBalance,
+    sepoliaBalance,
+  ])
 
   const totalUsdBalance = useMemo(() => {
     return enhancedCurrencies.reduce(

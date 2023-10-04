@@ -9,6 +9,7 @@ import {
   Chain,
   bsc,
   avalanche,
+  sepolia,
 } from 'wagmi/chains'
 import usdcContracts from './usdcContracts'
 
@@ -198,6 +199,26 @@ export const DefaultChain: ReservoirChain = {
 
 export default [
   DefaultChain,
+  {
+    ...sepolia,
+    lightIconUrl: '/icons/eth-icon-dark.svg',
+    darkIconUrl: '/icons/eth-icon-light.svg',
+    reservoirBaseUrl: 'https://api-sepolia.reservoir.tools',
+    // proxyApi: 'https://api-sepolia.reservoir.tools',
+    routePrefix: 'sepolia',
+    apiKey: process.env.RESERVOIR_API_KEY,
+    coingeckoId: 'sepolia',
+    collectionSetId: process.env.NEXT_PUBLIC_SEPOLIA_COLLECTION_SET_ID,
+    community: process.env.NEXT_PUBLIC_SEPOLIA_COMMUNITY,
+    wssUrl: 'wss://ws-sepolia.reservoir.tools',
+    listingCurrencies: [
+      nativeCurrencyBase,
+      {
+        ...usdcCurrencyBase,
+        contract: usdcContracts[sepolia.id],
+      },
+    ],
+  },
   {
     ...polygon,
     lightIconUrl: '/icons/polygon-icon-dark.svg',

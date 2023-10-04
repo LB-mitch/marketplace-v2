@@ -12,6 +12,7 @@ const usdcContracts: Record<number, string> = {
   8453: '0x833589fcd6edb6e08f4c7c32d4f71b54bda02913', // base
   84531: '0xf175520c52418dfe19c8098071a252da48cd1c19', // base goerli
   534353: '0xA0D71B9877f44C744546D649147E3F1e70a93760', // scroll testnet
+  11155111: '0x8267cF9254734C6Eb452a7bb9AAF97B392258b21', // sepolia testnet
 }
 
 export default usdcContracts
